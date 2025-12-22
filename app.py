@@ -20,15 +20,11 @@ def get_main_keyboard():
     keyboard = InlineKeyboardMarkup(
         inline_keyboard=[
             [
-                InlineKeyboardButton(text="📢 Рассылка", callback_data="send"),
+                InlineKeyboardButton(text="👋 Без подписки", callback_data="hello"),
                 InlineKeyboardButton(text="👋 С подпиской", callback_data="hellosub"),
             ],
             [
-                InlineKeyboardButton(text="👋 Без подписки", callback_data="hello"),
-                InlineKeyboardButton(text="✅ Подтвердить", callback_data="accept"),
-            ],
-            [
-                InlineKeyboardButton(text="❌ Отменить", callback_data="decline"),
+                InlineKeyboardButton(text="📢 Рассылка", callback_data="send"),
                 InlineKeyboardButton(text="📊 Статистика", callback_data="stats"),
             ]
         ]
