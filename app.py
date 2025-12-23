@@ -50,8 +50,7 @@ def get_confirm_keyboard():
 def admin_required(func):
     async def wrapper(message):
         if message.from_user.username not in config.getAdm():
-            await message.answer(f"Привет! Я всего лишь бот, можешь написать /start. По конкретным вопросам пиши Максу лично: @{config.getAdm()[0]}")
-            return
+            return await message.answer(f"Привет! Я всего лишь бот - можешь написать /start.\nПо конкретным вопросам пиши Максу лично: @{config.getAdm()[0]}")
         elif config.getAdmChat() == "":
             config.setAdmChat(message.from_user.id)
         return await func(message)
