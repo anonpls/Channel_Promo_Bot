@@ -50,7 +50,7 @@ def get_confirm_keyboard():
 def admin_required(func):
     async def wrapper(message):
         if message.from_user.username not in config.getAdm():
-            await message.answer(f"Привет! Напишите /start.\nСвязь со мной - @{config.getAdm()[0]}") # "Привет! Я всего лишь бот. По конкретным вопросам пиши Максу лично:" заменить и добавить в другую branch
+            await message.answer(f"Привет! Я всего лишь бот, можешь написать /start. По конкретным вопросам пиши Максу лично: @{config.getAdm()[0]}")
             return
         elif config.getAdmChat() == "":
             config.setAdmChat(message.from_user.id)
