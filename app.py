@@ -26,6 +26,9 @@ def get_main_keyboard():
             [
                 InlineKeyboardButton(text="📢 Рассылка", callback_data="send"),
                 InlineKeyboardButton(text="📊 Статистика", callback_data="stats"),
+            ],
+            [
+                InlineKeyboardButton(text="📥 Установленные сообщения", callback_data="info")
             ]
         ]
     )
@@ -47,7 +50,7 @@ def get_confirm_keyboard():
 def admin_required(func):
     async def wrapper(message):
         if message.from_user.username not in config.getAdm():
-            await message.answer(f"Привет! Напишите /start.\nСвязь со мной - @{config.getAdm()[0]}")
+            await message.answer(f"Привет! Напишите /start.\nСвязь со мной - @{config.getAdm()[0]}") # "Привет! Я всего лишь бот. По конкретным вопросам пиши Максу лично:" заменить и добавить в другую branch
             return
         elif config.getAdmChat() == "":
             config.setAdmChat(message.from_user.id)
@@ -70,6 +73,16 @@ async def handle_callback(callback: aiogram.types.CallbackQuery):
     global action, message_buff
     
     match callback.data:
+        case "info":
+            await callback.message.answer(
+                "📌 Приветственный текст для подписчиков (hellosub):"
+            )
+            await sendMessages(messages.getMessageWSub(), int(config.getAdmChat()))
+            await callback.message.answer(
+                "📌 Приветственный текст для новых пользователей (hello):"
+            )
+            await sendMessages(messages.getMessageWNoSub(), int(config.getAdmChat()))
+
         case "hellosub":
             await callback.message.answer(
                 "Вы в режиме hellosub!\nОтправьте сообщения, которые будут отправляться новым пользователям с подпиской",
@@ -209,7 +222,6 @@ async def declineMessageCommand(message: aiogram.types.Message):
     message_buff.clear()
 
 
-# Команда для отображения меню с кнопками
 @dp.message(Command("menu"))
 @admin_required
 async def show_menu(message: aiogram.types.Message):
@@ -242,7 +254,7 @@ async def startCommand(message: aiogram.types.Message):
                 [InlineKeyboardButton(text="🔄 Проверить подписку", callback_data=f"check_{message.from_user.id}")]
             ]
         )
-        await message.answer("_____________________", reply_markup=keyboard)
+        await message.answer("Подпишись и нажми кнопку ниже 👇", reply_markup=keyboard)
         
 
 async def check_sub(user_id: int) -> bool:
@@ -257,7 +269,6 @@ async def check_sub(user_id: int) -> bool:
 
 
 async def sendMessages(msgs: list, users):
-    from app import bot
     adm_chat = config.getAdmChat()
     
     if not msgs:
